@@ -4,7 +4,9 @@ require("dotenv").config();
 // ** Packages
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const bodyParser = require('body-parser');
+const expressLayouts = require('express-ejs-layouts');
 
 // ** Connection
 const ConnectDB = require('./db');
@@ -24,27 +26,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+app.use(expressLayouts);
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 ConnectDB()
 
 app.get('/', (req, res) => {
-    var mascots = [
-        { name: 'Sammy', organization: "DigitalOcean", birth_year: 2012 },
-        { name: 'Tux', organization: "Linux", birth_year: 1996 },
-        { name: 'Moby Dock', organization: "Docker", birth_year: 2013 }
-    ];
-    var tagline = "No programming concept is complete without a cute animal mascot.";
-
-    res.render('pages/index', {
-        mascots: mascots,
-        tagline: tagline
-    });
+    res.redirect('/blog/all')
 })
-
-
 app.use('/api/auth', auth)
-app.use('/api/blog', blog)
+app.use('/blog', blog)
 app.use('/api/category', category)
 
 

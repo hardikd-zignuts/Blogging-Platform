@@ -15,6 +15,7 @@ const router = express.Router()
 router.route('/all')
     .get(allBlogs)
 
+
 router.route('/create')
     .all(verifyToken)
     .post(addBlogValidator, createBlog)

@@ -1,11 +1,13 @@
 const { validationResult } = require("express-validator")
 const { addBlog, checkBlogExists, allBlogsList, checkBlogExistsById, updateBlog, removeBlog } = require("../helpers/blog.helper")
 
-
-
 const allBlogs = async (req, res, next) => {
     const list = await allBlogsList()
-    if (list) { res.status(200).json({ blogs: list }) }
+    if (list) {
+        res.render('pages/index', {
+            blogs: list
+        })
+    }
     else { res.status(400).json({ message: 'Failed To Retrieve Blogs' }) }
 }
 const createBlog = async (req, res, next) => {
