@@ -9,6 +9,7 @@ const checkUser = require('../helpers/user.helper');
 const jwt_key = process.env.JWT_KEY
 
 const login = async (req, res, next) => {
+    console.log(req.headers.cookie)
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
@@ -16,9 +17,15 @@ const login = async (req, res, next) => {
     const { email, password } = req.body
 
     const user = await checkUser(email)
-    if (!user) return res.status(400).json({ message: "User does not exist" })
+    if (!user) {
+        res.clearCookie("token");
+        return res.render('pages/404', { message: "User Not Found" })
+    }
 
-    if (password !== user.password) return res.status(400).json({ message: "Invalid Credentials" })
+    if (password !== user.password) {
+        res.clearCookie("token");
+        return res.render('pages/404', { message: "User Not Found" })
+    }
 
     const signData = {
         id: user.id,
@@ -29,7 +36,8 @@ const login = async (req, res, next) => {
         expiresIn: "10d"
     })
 
-    return res.status(200).json({ message: "Login Success", token })
+    res.cookie("token", token);
+    return res.redirect('/blog/all')
 }
 const register = async (req, res, next) => {
     // User.find({ email: req.body.email }).then(user => {

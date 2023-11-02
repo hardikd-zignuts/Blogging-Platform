@@ -15,6 +15,7 @@ const verifyToken = (req, res, next) => {
         req.user = authUser
         next()
     } catch (error) {
+        res.clearCookie('authToken')
         res.status(401).json({
             message: 'Unauthorized'
         })

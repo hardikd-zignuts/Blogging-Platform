@@ -9,10 +9,11 @@ const bodyParser = require('body-parser');
 const expressLayouts = require('express-ejs-layouts');
 
 // ** Connection
-const ConnectDB = require('./db');
+const ConnectDB = require('./connections/db');
 
 // ** Modules
-const { auth, blog, category } = require('./routes/routes')
+const { auth, blog, category } = require('./routes/routes');
+const { getBlog } = require("./controller/blog.controller");
 
 // ** Config
 const app = express()
@@ -30,16 +31,22 @@ app.use(bodyParser.urlencoded({
 app.use(expressLayouts);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.set("layout authLayout", false);
 
 ConnectDB()
 
 app.get('/', (req, res) => {
     res.redirect('/blog/all')
 })
+app.get('/auth/login', (req, res) => {
+    res.render('pages/login', { layout: 'authLayout' })
+})
+app.get('/:slug', getBlog)
+
+
 app.use('/api/auth', auth)
 app.use('/blog', blog)
 app.use('/api/category', category)
-
 
 // ** Server
 app.listen(PORT, () => {

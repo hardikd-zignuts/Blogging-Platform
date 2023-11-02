@@ -25,6 +25,4 @@ router.route('/:id')
     .patch(addCategoryValidator, editCategory)
     .delete(deleteCategory)
 
-
-
 module.exports = router

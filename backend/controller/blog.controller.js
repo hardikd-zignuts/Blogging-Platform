@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator")
-const { addBlog, checkBlogExists, allBlogsList, checkBlogExistsById, updateBlog, removeBlog } = require("../helpers/blog.helper")
+const { addBlog, checkBlogExists, allBlogsList, checkBlogExistsById, updateBlog, removeBlog, getBlogBySlug } = require("../helpers/blog.helper")
 
 const allBlogs = async (req, res, next) => {
     const list = await allBlogsList()
@@ -9,6 +9,20 @@ const allBlogs = async (req, res, next) => {
         })
     }
     else { res.status(400).json({ message: 'Failed To Retrieve Blogs' }) }
+}
+const getBlog = async (req, res, next) => {
+    if (!req.params.slug) res.status(400).json({ message: "Slug Not Found" })
+    const { slug } = req.params
+    const blogDetails = await getBlogBySlug(slug)
+    if (blogDetails) {
+        res.render('pages/details', {
+            blog: blogDetails
+        })
+    } else {
+        res.render('pages/404', {
+            message: "Blog Not Found"
+        })
+    }
 }
 const createBlog = async (req, res, next) => {
     const errors = validationResult(req)
@@ -66,5 +80,6 @@ module.exports = {
     createBlog,
     allBlogs,
     editBlog,
-    deleteBlog
+    deleteBlog,
+    getBlog
 }

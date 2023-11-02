@@ -18,7 +18,6 @@ const allCategory = async (req, res, next) => {
         res.status(400).json({ message: 'Failed To Retrieve Category' })
     }
 }
-
 const createCategory = async (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {

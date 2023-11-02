@@ -12,10 +12,13 @@ const checkBlogExistsById = async (id) => await Blog.findById(id)
 // ** Get all blogs
 const allBlogsList = async () => await Blog.find()
 
+// ** Get blog by slg
+const getBlogBySlug = async (slug) => await Blog.findOne({ slug })
+
 // ** Edit blog
 const updateBlog = async (id, data) => await Blog.findByIdAndUpdate(id, { ...data })
 
 // ** Delete blog
 const removeBlog = async (id) => await Blog.findByIdAndDelete(id)
 
-module.exports = { addBlog, checkBlogExists, allBlogsList, updateBlog, checkBlogExistsById, removeBlog }
+module.exports = { addBlog, checkBlogExists, allBlogsList, updateBlog, checkBlogExistsById, removeBlog, getBlogBySlug }
