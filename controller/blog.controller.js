@@ -4,9 +4,9 @@ const { addBlog, checkBlogExists, allBlogsList, checkBlogExistsById, updateBlog,
 const allBlogs = async (req, res, next) => {
     const list = await allBlogsList()
     if (list) {
-        res.render('pages/index', {
-            blogs: list
-        })
+        // res.status(200).json({ blog: list })
+        req.blogs = list
+        next()
     }
     else { res.status(400).json({ message: 'Failed To Retrieve Blogs' }) }
 }
@@ -27,7 +27,6 @@ const getBlog = async (req, res, next) => {
 const createBlog = async (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        console.log(errors.array())
         return res.status(400).json({ errors: errors.array() })
     }
     const { title, slug, category, description, publishedAt } = req.body
@@ -37,14 +36,13 @@ const createBlog = async (req, res, next) => {
         res.status(400).json({ message: "Blog already exists" })
     } else {
         await addBlog({ title, slug, category, description, publishedAt }).then(() => {
-            res.status(200).json({ message: "Blog created" })
+            return res.redirect('/admin/blogs')
         })
     }
 }
 const editBlog = async (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        console.log(errors.array())
         return res.status(400).json({ errors: errors.array() })
     }
     const { title, slug, category, description, publishedAt } = req.body
@@ -53,7 +51,7 @@ const editBlog = async (req, res, next) => {
     const blogList = await checkBlogExistsById(id)
     if (blogList) {
         await updateBlog(id, { title, slug, category, description, publishedAt }).then(() => {
-            res.status(200).json({ message: "Blog Updated" })
+            return res.redirect('/admin/blogs')
         }).catch(() => {
             res.status(400).json({ message: "Slug already Exists" })
         })

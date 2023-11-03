@@ -21,7 +21,7 @@ router.route('/create')
 
 router.route('/:slug/:id')
     .all(verifyToken)
-    .patch(addBlogValidator, editBlog)
+    .post(addBlogValidator, editBlog)
     .delete(deleteBlog)
 
 module.exports = router

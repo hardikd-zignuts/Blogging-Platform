@@ -9,7 +9,6 @@ const checkUser = require('../helpers/user.helper');
 const jwt_key = process.env.JWT_KEY
 
 const login = async (req, res, next) => {
-    console.log(req.headers.cookie)
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
@@ -37,11 +36,10 @@ const login = async (req, res, next) => {
     })
 
     res.cookie("token", token);
-    return res.redirect('/admin/dashboard')
+    return res.redirect('/admin/blogs')
 }
 const register = async (req, res, next) => {
     // User.find({ email: req.body.email }).then(user => {
-    //     console.log(user)
     //     if (user.length > 0) {
     //         return res.status(400).json({ "message": "User already exists" })
     //     }

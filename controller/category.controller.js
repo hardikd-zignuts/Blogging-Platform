@@ -12,7 +12,9 @@ const {
 const allCategory = async (req, res, next) => {
     const list = await allCategoryList()
     if (list) {
-        res.status(200).json({ category: list })
+        req.category = list
+        next()
+        // res.status(200).json({ category: list })
     }
     else {
         res.status(400).json({ message: 'Failed To Retrieve Category' })
@@ -21,7 +23,6 @@ const allCategory = async (req, res, next) => {
 const createCategory = async (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        console.log(errors.array())
         return res.status(400).json({ errors: errors.array() })
     }
     const { name } = req.body
@@ -31,14 +32,13 @@ const createCategory = async (req, res, next) => {
         res.status(400).json({ message: "Category exists" })
     } else {
         await addCategory({ name }).then(() => {
-            res.status(200).json({ message: "Category added" })
+            return res.redirect('/admin/category')
         })
     }
 }
 const editCategory = async (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        console.log(errors.array())
         return res.status(400).json({ errors: errors.array() })
     }
     const { name } = req.body

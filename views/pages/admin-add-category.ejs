@@ -1,0 +1,39 @@
+<body>
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Top navbar -->
+    <div><%- include('../partials/admin/navbar'); %></div>
+    <%- include('../partials/admin/header'); %>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <!-- Table -->
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">Add Category</h3>
+              <main>
+                <form class="mt-4" action="/api/category/create" method="post">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label"
+                      >Category Name</label
+                    >
+                    <input
+                      minlength="1"
+                      required
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      name="name"
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

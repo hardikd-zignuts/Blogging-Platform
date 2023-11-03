@@ -1,26 +1,18 @@
 <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
   <div class="dropdown-header noti-title">
     <h6 class="text-overflow m-0">Welcome!</h6>
+    <h6 class="text-overflow text-black text-lowercase"><%= user.email %></h6>
   </div>
-  <a href="/profile" class="dropdown-item">
-    <i class="ni ni-single-02"></i>
-    <span>My profile</span>
-  </a>
-  <a href="/profile" class="dropdown-item">
-    <i class="ni ni-settings-gear-65"></i>
-    <span>Settings</span>
-  </a>
-  <a href="/profile" class="dropdown-item">
-    <i class="ni ni-calendar-grid-58"></i>
-    <span>Activity</span>
-  </a>
-  <a href="/profile" class="dropdown-item">
-    <i class="ni ni-support-16"></i>
-    <span>Support</span>
-  </a>
   <div class="dropdown-divider"></div>
-  <a href="#!" class="dropdown-item logout">
+  <a id="logout" href="#!" class="dropdown-item logout">
     <i class="ni ni-user-run"></i>
     <span class="logout">Logout</span>
   </a>
 </div>
+<script>
+  document.getElementById("logout").addEventListener("click", () => {
+    // Clear cookie
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.href = "/";
+  });
+</script>

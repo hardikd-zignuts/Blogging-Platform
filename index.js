@@ -14,8 +14,9 @@ const ConnectDB = require('./connections/db');
 
 // ** Modules
 const { auth, blog, category } = require('./routes/routes');
-const { getBlog } = require("./controller/blog.controller");
+const { getBlog, allBlogs } = require("./controller/blog.controller");
 const { isAuthenticated } = require("./middleware/middleware");
+const { allCategory } = require("./controller/category.controller");
 
 // ** Config
 const app = express()
@@ -39,34 +40,43 @@ app.use(express.static(path.join(__dirname, '/public')));
 ConnectDB()
 
 app.get('/', (req, res) => {
-    res.redirect('/blog/all')
+    res.redirect('/blogs')
+})
+
+app.get('/blogs', allBlogs, (req, res) => {
+    res.render('pages/index', {
+        blogs: req.blogs
+    })
 })
 app.get('/auth/login', (req, res) => {
-    res.render('pages/login', { layout: 'auth' })
+    if (req?.headers?.cookie) {
+        return res.redirect('/admin/blogs')
+    } else {
+        return res.render('pages/login', { layout: 'auth' })
+    }
 })
 app.get('/:slug', getBlog)
 
 app.get('/error/403', (req, res) => {
     res.render('pages/403', { layout: 'auth' })
 })
-app.get('/admin/dashboard', isAuthenticated, (req, res) => {
-    res.render('pages/dashboard', { layout: 'admin' })
-})
-app.get('/admin/blogs', isAuthenticated, async (req, res) => {
-    try {
-        const blogResponse = await axios.get('http://localhost:5000/blog/all/');
-        const blogPosts = blogResponse.data;
-        res.render('pages/tables', { layout: 'admin', blogPosts });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('An error occurred while fetching blog data.');
-    }
+app.get('/admin/blogs', isAuthenticated, allBlogs, allCategory, async (req, res) => {
+    res.render('pages/admin-blogs', { layout: 'admin', blogs: req.blogs, user: req.user, category: req.category });
+});
+app.get('/admin/add-blogs', isAuthenticated, allBlogs, allCategory, async (req, res) => {
+    res.render('pages/admin-add-blogs', { layout: 'admin', blogs: req.blogs, user: req.user, category: req.category });
+});
+app.get('/admin/category', isAuthenticated, allCategory, async (req, res) => {
+    res.render('pages/admin-category', { layout: 'admin', category: req.category, user: req.user });
+});
+app.get('/admin/add-category', isAuthenticated, allCategory, async (req, res) => {
+    res.render('pages/admin-add-category', { layout: 'admin', category: req.category, user: req.user });
 });
 
 
 app.use('/blog', blog)
 app.use('/api/auth', auth)
-app.use('/admin/category', category)
+app.use('/api/category', category)
 
 // ** Server
 app.listen(PORT, () => {

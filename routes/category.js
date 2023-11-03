@@ -2,7 +2,7 @@
 const express = require('express');
 
 //** Modals
-const { verifyToken, isAuthenticated } = require('../middleware/middleware');
+const { verifyToken } = require('../middleware/middleware');
 
 //** Controller
 const { addCategoryValidator } = require('../validators/category');

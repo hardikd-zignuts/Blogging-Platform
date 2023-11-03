@@ -5,8 +5,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const jwt_key = process.env.JWT_KEY
 
 const verifyToken = (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1]
-    console.log(token)
+    const token = req.headers.authorization?.split(' ')[1] || req.headers.cookie.split('=')[1]
     try {
         const authUser = jsonwebtoken.verify(token, jwt_key)
         if (!authUser) return res.redirect('/error/403')

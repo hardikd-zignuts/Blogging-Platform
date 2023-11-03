@@ -18,9 +18,24 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
       </ul>
-      <a class="text-white text-decoration-none" href="/auth/login">
-        <button class="btn btn-outline-success">Login</button>
+      <a
+        id="btnLink"
+        class="text-white text-decoration-none"
+        href="/auth/login"
+      >
+        <button id="btn" class="btn btn-outline-success">Login</button>
       </a>
     </div>
   </div>
 </nav>
+<script>
+  const btn = document.getElementById("btn");
+  const btnLink = document.getElementById("btnLink");
+  if (document.cookie) {
+    btn.innerHTML = "DASHBOARD";
+    btnLink.setAttribute("href", "/admin/blogs");
+  } else {
+    btn.innerHTML = "LOGIN";
+    btnLink.setAttribute("href", "/auth/login");
+  }
+</script>

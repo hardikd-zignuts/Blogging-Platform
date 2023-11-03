@@ -1,0 +1,232 @@
+<body>
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Top navbar -->
+    <div><%- include('../partials/admin/navbar'); %></div>
+    <%- include('../partials/admin/header'); %>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <!-- Table -->
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">All Blogs</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Publish Date</th>
+                    <th scope="col">Slug</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%
+                  blogs.forEach(function({slug,category,description,title,publishedAt,_id}){
+                  %>
+                  <div
+                    class="modal fade"
+                    id="<%= slug.slice(0,3) %>"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    tabindex="-1"
+                    aria-labelledby="staticBackdropLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1
+                            class="modal-title fs-5"
+                            id="staticBackdrsopLabel"
+                          >
+                            Edit Blog
+                          </h1>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="modal-body">
+                          <form
+                            method="post"
+                            action="/blog/<%= slug %>/<%= _id %>"
+                          >
+                            <div class="mb-3">
+                              <label class="form-label">Blog Title</label>
+                              <input
+                                required
+                                type="text"
+                                class="form-control text-dark"
+                                name="title"
+                                value="<%= title %>"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Blog Slug</label>
+                              <input
+                                required
+                                type="text"
+                                class="form-control text-dark"
+                                name="slug"
+                                value="<%= slug %>"
+                              />
+                            </div>
+                            <div class="form-floating mb-3">
+                              <textarea
+                                name="description"
+                                class="form-control text-dark"
+                                placeholder="Leave a description here"
+                                style="height: 100px"
+                              >
+                            <%= description %>
+                            </textarea
+                              >
+                              <label for="floatingTextarea2">Description</label>
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Category</label>
+                              <select
+                                name="category"
+                                class="form-select"
+                                aria-label="Default select example"
+                              >
+                                <option selected value="<%= category %>">
+                                  <%= category %>
+                                </option>
+                              </select>
+                            </div>
+                            <div class="mb-3">
+                              <label class="form-label">Publish date</label>
+                              <input
+                                class="form-control text-dark"
+                                value="<%= new Date(publishedAt).toISOString().split('T')[0] %>"
+                                required
+                                type="date"
+                                id="start"
+                                name="publishedAt"
+                              />
+                            </div>
+
+                            <div class="modal-footer">
+                              <button
+                                type="reset"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                              >
+                                Close
+                              </button>
+                              <button type="submit" class="btn btn-primary">
+                                Update
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <tr>
+                    <th scope="row">
+                      <div class="media align-items-center">
+                        <a href="#" class="avatar rounded-circle mr-3">
+                          <img
+                            alt="Image placeholder"
+                            src="/img/theme/bootstrap.jpg"
+                          />
+                        </a>
+                        <div class="media-body">
+                          <span class="mb-0 text-sm"><%= title %></span>
+                        </div>
+                      </div>
+                    </th>
+                    <td><%= category %></td>
+                    <td class="w-25">
+                      <div class="text-wrap"><%= description %></div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <span class="mr-2"
+                          ><%= new Date(publishedAt).toDateString() %></span
+                        >
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <span class="mr-2"><%= slug %></span>
+                      </div>
+                    </td>
+                    <td class="text-right">
+                      <div class="dropdown">
+                        <a
+                          class="btn btn-sm btn-icon-only text-light"
+                          href="#"
+                          role="button"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div
+                          class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                        >
+                          <a
+                            data-bs-toggle="modal"
+                            data-bs-target="#<%= slug.slice(0,3) %>"
+                            class="dropdown-item"
+                            href="#"
+                            id="edit-blog"
+                            >Edit</a
+                          >
+                          <a
+                            class="dropdown-item delete-blog"
+                            href="#"
+                            data-slug="<%= slug %>"
+                            data-id="<%= _id %>"
+                            >Delete</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+  document.querySelectorAll(".delete-blog").forEach((link) => {
+    link.addEventListener("click", async function (event) {
+      event.preventDefault(); // Prevent the default behavior of the anchor link
+
+      const slug = link.getAttribute("data-slug");
+      const id = link.getAttribute("data-id");
+
+      try {
+        const response = await fetch(`/blog/${slug}/${id}`, {
+          method: "DELETE",
+        });
+
+        if (response.status === 200) {
+          window.location.reload();
+        } else {
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  });
+</script>

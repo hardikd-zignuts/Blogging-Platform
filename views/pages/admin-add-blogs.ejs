@@ -1,0 +1,70 @@
+<body>
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Top navbar -->
+    <div><%- include('../partials/admin/navbar'); %></div>
+    <%- include('../partials/admin/header'); %>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <!-- Table -->
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">Add Blog</h3>
+              <main>
+                <form class="mt-5" method="post" action="/blog/create">
+                  <div class="mb-3">
+                    <label class="form-label">Blog Title</label>
+                    <input
+                      required
+                      type="text"
+                      class="form-control"
+                      name="title"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Blog Slug</label>
+                    <input
+                      required
+                      type="text"
+                      class="form-control"
+                      name="slug"
+                    />
+                  </div>
+                  <div class="form-floating mb-3">
+                    <textarea
+                      name="description"
+                      class="form-control"
+                      placeholder="Leave a description here"
+                      style="height: 100px"
+                    ></textarea>
+                    <label for="floatingTextarea2">Description</label>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select
+                      name="category"
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <% category.forEach(function(cat){ %>
+                      <option value="<%= cat.name %>"><%= cat.name %></option>
+                      <% }); %>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Publish date</label>
+                    <input required type="date" id="start" name="publishedAt" />
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

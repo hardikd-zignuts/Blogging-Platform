@@ -1,0 +1,92 @@
+<body>
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Top navbar -->
+    <div><%- include('../partials/admin/navbar'); %></div>
+    <%- include('../partials/admin/header'); %>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <!-- Table -->
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">All Categories</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% category.forEach(function({name,_id}){ %>
+                  <tr>
+                    <th scope="row">
+                      <div class="media align-items-center">
+                        <div class="media-body">
+                          <span class="mb-0 text-sm"><%= name %></span>
+                        </div>
+                      </div>
+                    </th>
+                    <td class="text-right">
+                      <div class="dropdown">
+                        <a
+                          class="btn btn-sm btn-icon-only text-light"
+                          href="#"
+                          role="button"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div
+                          class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                        >
+                          <a class="dropdown-item" href="#">Edit</a>
+                          <a
+                            class="dropdown-item delete-category"
+                            href="#"
+                            data-id="<%= _id %>"
+                            >Delete</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+  document.querySelectorAll(".delete-category").forEach((link) => {
+    link.addEventListener("click", async function (event) {
+      event.preventDefault(); // Prevent the default behavior of the anchor link
+
+      const id = link.getAttribute("data-id");
+
+      try {
+        const response = await fetch(`/api/category/${id}`, {
+          method: "DELETE",
+        });
+
+        if (response.status === 200) {
+          window.location.reload();
+        } else {
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  });
+</script>
