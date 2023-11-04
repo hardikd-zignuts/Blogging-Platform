@@ -22,7 +22,7 @@ router.route('/create')
 
 router.route('/:id')
     .all(verifyToken)
-    .patch(addCategoryValidator, editCategory)
+    .post(addCategoryValidator, editCategory)
     .delete(deleteCategory)
 
 module.exports = router

@@ -13,7 +13,12 @@
             <div class="card-header border-0">
               <h3 class="mb-0">Add Blog</h3>
               <main>
-                <form class="mt-5" method="post" action="/blog/create">
+                <form
+                  class="mt-5"
+                  method="post"
+                  action="/blog/create"
+                  enctype="multipart/form-data"
+                >
                   <div class="mb-3">
                     <label class="form-label">Blog Title</label>
                     <input
@@ -21,6 +26,7 @@
                       type="text"
                       class="form-control"
                       name="title"
+                      id="blogTitle"
                     />
                   </div>
                   <div class="mb-3">
@@ -30,10 +36,12 @@
                       type="text"
                       class="form-control"
                       name="slug"
+                      id="blogSlug"
                     />
                   </div>
                   <div class="form-floating mb-3">
                     <textarea
+                      required
                       name="description"
                       class="form-control"
                       placeholder="Leave a description here"
@@ -42,8 +50,19 @@
                     <label for="floatingTextarea2">Description</label>
                   </div>
                   <div class="mb-3">
+                    <label class="form-label">Thumbnail</label>
+                    <input
+                      required
+                      type="file"
+                      name="thumbnail"
+                      class="form-control"
+                      id="thumbnailInput"
+                    />
+                  </div>
+                  <div class="mb-3">
                     <label class="form-label">Category</label>
                     <select
+                      required
                       name="category"
                       class="form-select"
                       aria-label="Default select example"
@@ -68,3 +87,23 @@
     </div>
   </div>
 </body>
+<script>
+  // Get references to the title and slug input fields
+  const blogTitleInput = document.getElementById("blogTitle");
+  const blogSlugInput = document.getElementById("blogSlug");
+
+  // Add an input event listener to the title field
+  blogTitleInput.addEventListener("input", function () {
+    // Get the value of the title field
+    const title = blogTitleInput.value;
+
+    // Generate a slug based on the title (e.g., "My Blog Title" => "my-blog-title")
+    const slug = title
+      .toLowerCase() // Convert to lowercase
+      .replace(/ /g, "-") // Replace spaces with dashes
+      .replace(/[^a-z0-9-]/g, ""); // Remove any characters that are not letters, numbers, or dashes
+
+    // Set the generated slug in the slug input field
+    blogSlugInput.value = slug;
+  });
+</script>

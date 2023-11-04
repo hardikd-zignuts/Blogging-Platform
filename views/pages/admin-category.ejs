@@ -23,6 +23,61 @@
                 </thead>
                 <tbody>
                   <% category.forEach(function({name,_id}){ %>
+                  <div
+                    class="modal fade"
+                    id="<%= name %>"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    tabindex="-1"
+                    aria-labelledby="staticBackdropLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1
+                            class="modal-title fs-5"
+                            id="staticBackdrsopLabel"
+                          >
+                            Edit Category
+                          </h1>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="modal-body">
+                          <form method="post" action="/api/category/<%= _id %>">
+                            <div class="mb-3">
+                              <label class="form-label">Name</label>
+                              <input
+                                required
+                                type="text"
+                                class="form-control text-dark"
+                                name="name"
+                                value="<%= name %>"
+                              />
+                            </div>
+
+                            <div class="modal-footer">
+                              <button
+                                type="reset"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                              >
+                                Close
+                              </button>
+                              <button type="submit" class="btn btn-primary">
+                                Update
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <tr>
                     <th scope="row">
                       <div class="media align-items-center">
@@ -46,7 +101,13 @@
                         <div
                           class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
                         >
-                          <a class="dropdown-item" href="#">Edit</a>
+                          <a
+                            data-bs-toggle="modal"
+                            data-bs-target="#<%= name %>"
+                            class="dropdown-item"
+                            href="#"
+                            >Edit</a
+                          >
                           <a
                             class="dropdown-item delete-category"
                             href="#"

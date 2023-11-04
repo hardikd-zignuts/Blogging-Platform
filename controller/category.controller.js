@@ -49,7 +49,7 @@ const editCategory = async (req, res, next) => {
         if (catList.id !== id) return res.status(400).json({ message: "Category already Exists" })
 
         await updateCategory(id, { name }).then(() => {
-            res.status(200).json({ message: "Category Updated" })
+            return res.redirect('/admin/category')
         }).catch(() => {
             res.status(400).json({ message: "Category already Exists" })
         })

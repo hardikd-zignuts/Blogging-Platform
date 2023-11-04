@@ -5,7 +5,7 @@ const addCategoryValidator = [
     body('name')
         .isString()
         .notEmpty()
-        .withMessage('Title is required and must be a string'),
+        .withMessage('Name is required and must be a string'),
 ]
 
 module.exports = {

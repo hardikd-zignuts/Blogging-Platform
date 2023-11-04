@@ -30,12 +30,12 @@ const createBlog = async (req, res, next) => {
         return res.status(400).json({ errors: errors.array() })
     }
     const { title, slug, category, description, publishedAt } = req.body
-
+    const thumbnail = req.file.path
     const blogList = await checkBlogExists(slug)
     if (blogList) {
         res.status(400).json({ message: "Blog already exists" })
     } else {
-        await addBlog({ title, slug, category, description, publishedAt }).then(() => {
+        await addBlog({ title, slug, category, description, publishedAt, thumbnail }).then(() => {
             return res.redirect('/admin/blogs')
         })
     }
@@ -47,10 +47,11 @@ const editBlog = async (req, res, next) => {
     }
     const { title, slug, category, description, publishedAt } = req.body
     const { id } = req.params
+    const thumbnail = req.file.path
 
     const blogList = await checkBlogExistsById(id)
     if (blogList) {
-        await updateBlog(id, { title, slug, category, description, publishedAt }).then(() => {
+        await updateBlog(id, { title, slug, category, description, publishedAt, thumbnail }).then(() => {
             return res.redirect('/admin/blogs')
         }).catch(() => {
             res.status(400).json({ message: "Slug already Exists" })

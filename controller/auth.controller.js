@@ -32,7 +32,7 @@ const login = async (req, res, next) => {
         email: user.email
     }
     const token = jsonwebtoken.sign(signData, jwt_key, {
-        expiresIn: "10d"
+        expiresIn: "2h"
     })
 
     res.cookie("token", token);

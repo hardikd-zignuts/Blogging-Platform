@@ -19,6 +19,10 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    thumbnail: {
+        type: String,
+        required: true
+    },
     publishedAt: {
         type: Date,
         required: true

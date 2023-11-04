@@ -18,6 +18,10 @@ const addBlogValidator = [
         .isString()
         .notEmpty()
         .withMessage('Description is required and must be a string'),
+    body('thumbnail')
+        .isString()
+        .notEmpty()
+        .withMessage('Thumbnail is required and must be a string'),
     body('publishedAt')
         .isDate()
         .notEmpty()

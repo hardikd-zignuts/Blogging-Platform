@@ -15,7 +15,7 @@ const ConnectDB = require('./connections/db');
 // ** Modules
 const { auth, blog, category } = require('./routes/routes');
 const { getBlog, allBlogs } = require("./controller/blog.controller");
-const { isAuthenticated } = require("./middleware/middleware");
+const { isAuthenticated, verifyToken } = require("./middleware/middleware");
 const { allCategory } = require("./controller/category.controller");
 
 // ** Config
@@ -37,6 +37,7 @@ app.set('view engine', 'ejs');
 app.set("layout auth", false);
 // app.set("layout admin", false);
 app.use(express.static(path.join(__dirname, '/public')));
+app.use('/uploads', express.static('uploads'));
 ConnectDB()
 
 app.get('/', (req, res) => {
@@ -49,7 +50,7 @@ app.get('/blogs', allBlogs, (req, res) => {
     })
 })
 app.get('/auth/login', (req, res) => {
-    if (req?.headers?.cookie) {
+    if (req?.user) {
         return res.redirect('/admin/blogs')
     } else {
         return res.render('pages/login', { layout: 'auth' })
@@ -61,7 +62,7 @@ app.get('/error/403', (req, res) => {
     res.render('pages/403', { layout: 'auth' })
 })
 app.get('/admin/blogs', isAuthenticated, allBlogs, allCategory, async (req, res) => {
-    res.render('pages/admin-blogs', { layout: 'admin', blogs: req.blogs, user: req.user, category: req.category });
+    res.render('pages/admin-blogs', { layout: 'admin', blogs: req.blogs, user: req.user, categories: req.category });
 });
 app.get('/admin/add-blogs', isAuthenticated, allBlogs, allCategory, async (req, res) => {
     res.render('pages/admin-add-blogs', { layout: 'admin', blogs: req.blogs, user: req.user, category: req.category });

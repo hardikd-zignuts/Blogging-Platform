@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                   <%
-                  blogs.forEach(function({slug,category,description,title,publishedAt,_id}){
+                  blogs.forEach(function({slug,category,description,title,publishedAt,_id,thumbnail}){
                   %>
                   <div
                     class="modal fade"
@@ -58,6 +58,7 @@
                           <form
                             method="post"
                             action="/blog/<%= slug %>/<%= _id %>"
+                            enctype="multipart/form-data"
                           >
                             <div class="mb-3">
                               <label class="form-label">Blog Title</label>
@@ -79,6 +80,21 @@
                                 value="<%= slug %>"
                               />
                             </div>
+                            <div class="mb-3">
+                              <label class="form-label">Thumbnail</label>
+                              <img
+                            class="thumb-form"
+                            alt="Image placeholder"
+                            src="/<%= thumbnail %>"
+                          />
+                              <input
+                                required
+                                type="file"
+                                class="form-control text-dark"
+                                name="thumbnail"
+                                value="<%= thumbnail %>"
+                              />
+                            </div>
                             <div class="form-floating mb-3">
                               <textarea
                                 name="description"
@@ -86,8 +102,7 @@
                                 placeholder="Leave a description here"
                                 style="height: 100px"
                               >
-                            <%= description %>
-                            </textarea
+<%= description %></textarea
                               >
                               <label for="floatingTextarea2">Description</label>
                             </div>
@@ -98,9 +113,11 @@
                                 class="form-select"
                                 aria-label="Default select example"
                               >
-                                <option selected value="<%= category %>">
-                                  <%= category %>
+                                <% categories.forEach(function({name}){ %>
+                                <option <%= name === category ? 'selected' : '' %> value="<%= name %>">
+                                  <%= name %>
                                 </option>
+                                <% }); %>
                               </select>
                             </div>
                             <div class="mb-3">
@@ -137,8 +154,9 @@
                       <div class="media align-items-center">
                         <a href="#" class="avatar rounded-circle mr-3">
                           <img
+                            class="thumb"
                             alt="Image placeholder"
-                            src="/img/theme/bootstrap.jpg"
+                            src="/<%= thumbnail %>"
                           />
                         </a>
                         <div class="media-body">
