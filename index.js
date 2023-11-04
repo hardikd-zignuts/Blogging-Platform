@@ -7,7 +7,6 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 const expressLayouts = require('express-ejs-layouts');
-const { default: axios } = require("axios");
 
 // ** Connection
 const ConnectDB = require('./connections/db');
@@ -22,7 +21,7 @@ const { allCategory } = require("./controller/category.controller");
 const app = express()
 
 // ** Constant
-const PORT = 5000
+const PORT = process.env.PORT || 5000;
 
 //** Middleware
 app.use(cors())
