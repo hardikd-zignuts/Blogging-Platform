@@ -25,14 +25,6 @@
               aria-label="Enter search term..."
               aria-describedby="button-search"
             />
-            <button
-              onclick="searchBlog()"
-              class="btn btn-primary"
-              id="button-search"
-              type="button"
-            >
-              Go!
-            </button>
           </div>
         </div>
       </div>
@@ -78,47 +70,54 @@
       </div>
     </div>
   </main>
-  <!-- <script>
-    const blogData = JSON.parse(`<%- JSON.stringify(blogs) %>`);
+  <script>
+    let blogData = JSON.parse(`<%- JSON.stringify(blogs) %>`);
     const input = document.getElementById("input");
     const blogContainer = document.getElementById("blog-container");
+    // Store the original blog data for resetting the search
+    const originalBlogData = blogData;
+
+    input.addEventListener("input", searchBlog);
+
     function searchBlog() {
-      if (input.value == "") {
-        blogContainer;
+      const searchTerm = input.value.trim().toLowerCase();
+      if (searchTerm === "") {
+        blogData = originalBlogData;
       } else {
-        const str = "";
-        blogData.forEach((blog) => {
-          if (blog.title?.includes(input.value)) {
-            str += `<div class="col-lg-6">
-              <div class="card mb-4">
-                <a href="#!"
-                  ><img
-                    class="card-img-top"
-                    src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg"
-                    alt="..."
-                /></a>
-                <div class="card-body">
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <div class="small text-muted">
-                      ${new Date(blog.publishedAt).toDateString()}
-                    </div>
-                    <span class="badge bg-info text-dark"
-                      >${blog.category}</span
-                    >
-                  </div>
-                  <h2 class="card-title h4">${blog.title}</h2>
-                  <p class="card-text">${blog.description}</p>
-                  <a class="btn btn-primary" href="detail.html">Read more →</a>
-                </div>
-              </div>
-            </div>`;
-          }
+        blogData = originalBlogData.filter((blog) => {
+          return blog.title.toLowerCase().includes(searchTerm);
         });
-        blogContainer.innerHTML = str;
-        console.log(input.value);
       }
+      updateBlogList();
     }
-  </script> -->
+
+    function updateBlogList() {
+      const str = blogData
+        .map((blog) => {
+          return `<div class="col-lg-4">
+          <div class="card mb-4">
+            <a href="#!"><img class="card-img-top" src="${
+              blog.thumbnail
+            }" alt="..."></a>
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="small text-muted">${new Date(
+                  blog.publishedAt
+                ).toDateString()}</div>
+                <span class="badge bg-info text-dark">${blog.category}</span>
+              </div>
+              <h2 class="card-title h4">${blog.title}</h2>
+              <p class="card-text">${
+                blog.description.substring(0, 100) + "..."
+              }</p>
+              <a class="btn btn-primary" href="/${blog.slug}">Read more →</a>
+            </div>
+          </div>
+        </div>`;
+        })
+        .join("");
+
+      blogContainer.innerHTML = str;
+    }
+  </script>
 </body>
