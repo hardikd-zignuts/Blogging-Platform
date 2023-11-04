@@ -14,7 +14,7 @@ const ConnectDB = require('./connections/db');
 // ** Modules
 const { auth, blog, category } = require('./routes/routes');
 const { getBlog, allBlogs } = require("./controller/blog.controller");
-const { isAuthenticated, verifyToken } = require("./middleware/middleware");
+const { isAuthenticated } = require("./middleware/middleware");
 const { allCategory } = require("./controller/category.controller");
 
 // ** Config
