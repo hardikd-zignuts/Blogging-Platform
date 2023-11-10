@@ -31,7 +31,7 @@
 <script>
   const btn = document.getElementById("btn");
   const btnLink = document.getElementById("btnLink");
-  if (document.cookie) {
+  if (document.cookie?.includes("token")) {
     btn.innerHTML = "DASHBOARD";
     btnLink.setAttribute("href", "/admin/blogs");
   } else {

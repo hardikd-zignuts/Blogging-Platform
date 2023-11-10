@@ -17,7 +17,7 @@ const verifyToken = (req, res, next) => {
 }
 const isAuthenticated = (req, res, next) => {
     if (!req.headers.cookie) return res.redirect('/error/403')
-    const token = req.headers.cookie.split('=')[1]
+    const token = req.headers?.cookie?.split(';')?.find(ele => ele?.includes('token'))?.trim()?.split('=')[1]
     try {
         const authUser = jsonwebtoken.verify(token, jwt_key)
         if (!authUser) {
